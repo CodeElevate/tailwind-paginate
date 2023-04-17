@@ -14,6 +14,7 @@ function App() {
         totalItems={40}
         pageSize={3}
         onPageChange={handlePageChange}
+        disabledClassName=""
       />
     </>
   );

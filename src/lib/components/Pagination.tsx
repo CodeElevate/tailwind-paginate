@@ -5,10 +5,6 @@ import PaginationProps from "./PaginationProps";
 /**
  * Pagination component for displaying page numbers and handling page changes.
  * @param {Object} props - The props object for the Pagination component.
- * @param {number} props.currentPage - The current page number.
- * @param {number} props.pageSize - The number of items to display per page.
- * @param {number} props.totalItems - The total number of items to be paginated.
- * @param {function} props.onPageChange - The function to be called when a page is clicked.
  * @returns {JSX.Element} - The Pagination component.
  */
 const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalItems, onPageChange }: PaginationProps): JSX.Element => {
