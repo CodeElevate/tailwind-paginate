@@ -8,7 +8,7 @@ function App() {
     setCurrentPage(pageNumber);
   }
   return (
-    <>
+    <div className="p-12 theme-rose">
       <Pagination
         currentPage={currentPage}
         totalItems={40}
@@ -16,7 +16,7 @@ function App() {
         onPageChange={handlePageChange}
         disabledClassName=""
       />
-    </>
+    </div>
   );
 }
 
