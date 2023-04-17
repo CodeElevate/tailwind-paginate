@@ -14,10 +14,14 @@ yarn add tailwind-paginate
 To use Tailwind Paginate in your React application, simply import the `Paginate` component and pass it your data and any desired options:
 
 ```javascript
-import React from 'react';
+import React, { useState } from 'react';
 import { Pagination } from 'tailwind-paginate';
 
 const MyComponent = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  function handlePageChange(pageNumber) {
+    setCurrentPage(pageNumber);
+  }
   const data = [...]; // Your data
   const options = {...}; // Your pagination options
 
@@ -27,11 +31,10 @@ const MyComponent = () => {
         // Render your items
       ))}
       <Pagination
-        pageCount={Math.ceil(data.length / options.perPage)}
-        currentPage={options.currentPage}
-        onChange={({ selected }) => {
-          // Update your options with the selected page
-        }}
+        currentPage={currentPage}
+        totalItems={data.length}
+        pageSize={options.perPage}
+        onPageChange={handlePageChange}
       />
     </>
   );
@@ -54,17 +57,15 @@ Tailwind Paginate is highly customizable, and you can adjust its appearance and 
 | breakLinkClassName     | string   |    | The class name for the break link element                                                 |
 | onPageChange           | function | -             | Callback function for when a new page is selected                                          |
 | containerClassName     | string   |  - | The class name for the container element                                                  |
-| pageClassName          | string   | - | The class name for the page element                                                       |
-| pageLinkClassName      | string   |  -  | The class name for the page link element                                                  |
-| activeClassName       | string   |  -    | The class name for the active page element                                                |
-| activeLinkClassName   | string   | - | The class name for the active page link element                                           |
+| pageClassName          | string   | - | The class name for the page element                                                       |                                            |
+| activeClassName       | string   |  -    | The class name for the active page element                                                |                                          |
 | previousClassName      | string   |   -   | The class name for the previous button element                                            |
 | previousLinkClassName  | string   |  -  | The class name for the previous button link element                                       |
 | nextClassName          | string   |   -    | The class name for the next button element                                                |
 | nextLinkClassName      | string   |  -  | The class name for the next button link element                                           |
 | disabledClassName      | string   |  -   | The class name for the disabled page element                                              |
 | disabledLinkClassName  | string   | - | The class name for the disabled page link element                                         |
-| hideDisabled           | boolean  | false         | Whether to hide disabled page elements or not                                             |
+| hideLegand           | boolean  | false         | Whether to hide disabled page elements or not                                             |
 | pageSize               | number   | -             | The number of items to display per page                                                   |
 | totalItems             | number   | -             | The total number of items to paginate through                                             |
 
@@ -76,4 +77,4 @@ Tailwind Paginate is highly customizable, and you can adjust its appearance and 
 - `marginPagesDisplayed`: The number of pages to display at the beginning and end of the pagination range.
 - `pageRangeDisplayed`: The number of pages to display around the current page.
    -->
-For a full list of props and customization options, please refer to the documentation.
+<!-- For a full list of props and customization options, please refer to the documentation. -->

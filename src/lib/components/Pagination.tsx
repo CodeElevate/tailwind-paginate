@@ -1,15 +1,44 @@
 import React from "react";
 import PaginationProps from "./PaginationProps";
 
-
 /**
  * Pagination component for displaying page numbers and handling page changes.
  * @param {Object} props - The props object for the Pagination component.
  * @returns {JSX.Element} - The Pagination component.
  */
-const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalItems, onPageChange }: PaginationProps): JSX.Element => {
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage = 1,
+  pageCount = 10,
+  pageRangeDisplayed = 6,
+  marginPagesDisplayed = 2,
+  previousLabel = <span>Previous</span>,
+  nextLabel = <span>Next</span>,
+  breakLabel = <span>...</span>,
+  breakClassName,
+  onPageChange,
+  containerClassName,
+  pageClassName,
+  activeClassName,
+  previousClassName,
+  previousLinkClassName,
+  nextClassName,
+  nextLinkClassName,
+  disabledClassName,
+  disabledLinkClassName,
+  hideLegand = false,
+  pageSize,
+  totalItems,
+}: PaginationProps): JSX.Element => {
+
   const totalPages: number = Math.ceil(totalItems / pageSize);
   const pages: number[] = [];
+
+  const pageRange: number = Math.min(totalPages, pageRangeDisplayed);
+  const sidePages: number = Math.min(marginPagesDisplayed, pageRange - 2);
+  const startPage: number = Math.max(2, currentPage - sidePages);
+  const endPage: number = Math.min(totalPages - 1, currentPage + sidePages);
+
+
 
   // Build an array of page numbers to display
   for (let i = 1; i <= totalPages; i++) {
@@ -28,11 +57,11 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
         <nav
           role="navigation"
           aria-label="{{ __('Pagination Navigation') }}"
-          className="flex items-center justify-between my-4 not-prose"
+          className={containerClassName ?? "flex items-center justify-between my-4 not-prose"}
         >
           <div className="flex justify-between flex-1 md:hidden not-prose">
             {currentPage === 1 ? (
-              <span className="relative  inline-flex items-center py-2 px-4 mr-3 text-sm font-medium text-gray-500 bg-skin-base rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+              <span className={disabledClassName ?? "relative  inline-flex items-center py-2 px-4 mr-3 text-sm font-medium text-gray-500 bg-skin-base rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}>
                 <svg
                   aria-hidden="true"
                   className="mr-2 w-5 h-5"
@@ -46,12 +75,12 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Previous
+                {previousLabel}
               </span>
             ) : (
               <button
                 onClick={() => handlePageClick(currentPage - 1)}
-                className="relative  inline-flex items-center py-2 px-4 mr-3 text-sm font-medium text-gray-500 bg-skin-base rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition ease-in-out duration-150"
+                className={previousClassName ?? "relative  inline-flex items-center py-2 px-4 mr-3 text-sm font-medium text-gray-500 bg-skin-base rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition ease-in-out duration-150"}
               >
                 <svg
                   aria-hidden="true"
@@ -66,16 +95,16 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
                     clipRule="evenodd"
                   ></path>
                 </svg>
-                Previous
+                {previousLabel}
               </button>
             )}
 
             {currentPage < totalPages ? (
               <button
                 onClick={() => handlePageClick(currentPage + 1)}
-                className="relative inline-flex items-center py-2 px-4 text-sm font-medium text-gray-500 bg-skin-base rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition ease-in-out duration-150"
+                className={nextClassName ?? "relative inline-flex items-center py-2 px-4 text-sm font-medium text-gray-500 bg-skin-base rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition ease-in-out duration-150"}
               >
-                Next
+                {nextLabel}
                 <svg
                   aria-hidden="true"
                   className="ml-2 w-5 h-5"
@@ -91,8 +120,8 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
                 </svg>
               </button>
             ) : (
-              <span className="relative inline-flex items-center py-2 px-4 text-sm font-medium text-gray-500 bg-skin-base rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                Next
+              <span className={disabledClassName ?? "relative inline-flex items-center py-2 px-4 text-sm font-medium text-gray-500 bg-skin-base rounded-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}>
+                {nextLabel}
                 <svg
                   aria-hidden="true"
                   className="ml-2 w-5 h-5"
@@ -111,14 +140,15 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
           </div>
 
           <div className="hidden md:flex-1 md:flex md:items-center md:justify-between">
-            <div>
-              <p className="font-normal text-gray-700 dark:text-gray-400 leading-5">
-                Showing <span className="font-medium">{firstItem}</span> to{" "}
-                <span className="font-medium">{lastItem}</span> of{" "}
-                <span className="font-medium">{totalItems}</span> results
-              </p>
-            </div>
-
+            {hideLegand ? <div></div> :
+              <div>
+                <p className="font-normal text-gray-700 dark:text-gray-400 leading-5">
+                  Showing <span className="font-medium">{firstItem}</span> to{" "}
+                  <span className="font-medium">{lastItem}</span> of{" "}
+                  <span className="font-medium">{totalItems}</span> results
+                </p>
+              </div>
+            }
             <div>
               <span className="relative z-0 inline-flex shadow-sm rounded-md">
                 {currentPage === 1 ? (
@@ -127,7 +157,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
                     aria-label="{{ __('pagination.previous') }}"
                   >
                     <span
-                      className="relative inline-flex items-center px-3 py-2 ml-0 leading-tight  text-gray-500 bg-skin-base border rounded-l-lg border-gray-300 cursor-pointer  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white "
+                      className={disabledLinkClassName ?? "relative inline-flex items-center px-3 py-2 ml-0 leading-tight  text-gray-500 bg-skin-base border rounded-l-lg border-gray-300 cursor-pointer  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white "}
                       aria-hidden="true"
                     >
                       <svg
@@ -149,7 +179,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
                   <button
                     onClick={() => handlePageClick(currentPage - 1)}
                     rel="prev"
-                    className="relative inline-flex items-center px-3 py-2 ml-0 leading-tight  text-gray-500 bg-skin-base border rounded-l-lg border-gray-300 cursor-pointer  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white  transition ease-in-out duration-150"
+                    className={previousLinkClassName ?? "relative inline-flex items-center px-3 py-2 ml-0 leading-tight  text-gray-500 bg-skin-base border rounded-l-lg border-gray-300 cursor-pointer  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white  transition ease-in-out duration-150"}
                     aria-label="{{ __('pagination.previous') }}"
                   >
                     <svg
@@ -167,21 +197,21 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
                     </svg>
                   </button>
                 )}
-                {currentPage > 3 ? (
+                {startPage > 3 ? (
                   <button
                     onClick={() => handlePageClick(1)}
-                    className="relative inline-flex items-center py-2 px-3 leading-tight text-gray-500 bg-skin-base border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    aria-label="{{ __('Go to page :page', ['page' => 1]) }}"
+                    className={pageClassName ?? "relative inline-flex items-center py-2 px-3 leading-tight text-gray-500 bg-skin-base border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
+                    aria-label="Go to page :1"
                   >
                     1
                   </button>
                 ) : null}
-                {currentPage > 4 ? (
+                {startPage > 4 ? (
                   <span
                     aria-disabled="true"
-                    className="py-2 px-3 leading-tight text-gray-500 bg-skin-base border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    className={breakClassName ?? "py-2 px-3 leading-tight text-gray-500 bg-skin-base border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
                   >
-                    ...
+                    {breakLabel}
                   </span>
                 ) : null}
 
@@ -193,14 +223,14 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
                       <span
                         key={i}
                         aria-current="page"
-                        className="relative inline-flex items-center py-2 px-3 leading-tight text-skin-600 bg-skin-50 border border-skin-300 cursor-pointer hover:bg-skin-100 hover:text-skin-600 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+                        className={activeClassName ?? "relative inline-flex items-center py-2 px-3 leading-tight text-skin-600 bg-skin-50 border border-skin-300 cursor-pointer hover:bg-skin-100 hover:text-skin-600 dark:border-gray-700 dark:bg-gray-700 dark:text-white"}
                       >
                         {page}
                       </span>
                     ) : (
                       <button
                         key={i}
-                        className="relative inline-flex items-center py-2 px-3 leading-tight text-gray-500 bg-skin-base border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                        className={pageClassName ?? "relative inline-flex items-center py-2 px-3 leading-tight text-gray-500 bg-skin-base border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
                         aria-label={`Go to page ${page}`}
                         onClick={() => handlePageClick(page)}
                       >
@@ -211,19 +241,19 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
                   return null;
                 })}
 
-                {currentPage < totalPages - 3 ? (
+                {endPage < totalPages - 3 ? (
                   <span
                     aria-disabled="true"
-                    className="py-2 px-3 leading-tight text-gray-500 bg-skin-base border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                    className={breakClassName ?? "py-2 px-3 leading-tight text-gray-500 bg-skin-base border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
                   >
-                    ...
+                    {breakLabel}
                   </span>
                 ) : null}
-                {currentPage < totalPages - 2 ? (
+                {endPage < totalPages - 2 ? (
                   <button
                     onClick={() => handlePageClick(totalPages)}
-                    className="relative inline-flex items-center py-2 px-3 leading-tight text-gray-500 bg-skin-base border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    aria-label="{{ __('Go to page :page', ['page' => totalPages]) }}"
+                    className={pageClassName ?? "relative inline-flex items-center py-2 px-3 leading-tight text-gray-500 bg-skin-base border border-gray-300 cursor-pointer hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}
+                    aria-label={`Go to page :${totalPages}`}
                   >
                     {totalPages}
                   </button>
@@ -232,8 +262,8 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
                   <button
                     onClick={() => handlePageClick(currentPage + 1)}
                     rel="next"
-                    className="relative inline-flex items-center px-3 py-2 ml-0 leading-tight  text-gray-500 bg-skin-base border rounded-r-lg border-gray-300 cursor-pointer  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white  transition ease-in-out duration-150"
-                    aria-label="{{ __('pagination.next') }}"
+                    className={nextLinkClassName ?? "relative inline-flex items-center px-3 py-2 ml-0 leading-tight  text-gray-500 bg-skin-base border rounded-r-lg border-gray-300 cursor-pointer  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white  transition ease-in-out duration-150"}
+                    aria-label="pagination.next"
                   >
                     <svg
                       aria-hidden="true"
@@ -252,7 +282,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
                 ) : (
                   <span aria-disabled="true" aria-label="pagination.next">
                     <span
-                      className="relative inline-flex items-center px-3 py-2 ml-0 leading-tight  text-gray-500 bg-skin-base border rounded-r-lg border-gray-300 cursor-pointer  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white "
+                      className={disabledLinkClassName ?? "relative inline-flex items-center px-3 py-2 ml-0 leading-tight  text-gray-500 bg-skin-base border rounded-r-lg border-gray-300 cursor-pointer  hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white "}
                       aria-hidden="true"
                     >
                       <svg
@@ -281,5 +311,3 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalIte
 };
 
 export default Pagination;
-
-
