@@ -1,11 +1,7 @@
 import React from "react";
+import PaginationProps from "./PaginationProps";
 
-interface PaginationProps {
-  currentPage: number;
-  pageSize: number,
-  totalItems: number,
-  onPageChange: (page: number) => void;
-}
+
 /**
  * Pagination component for displaying page numbers and handling page changes.
  * @param {Object} props - The props object for the Pagination component.
@@ -15,7 +11,7 @@ interface PaginationProps {
  * @param {function} props.onPageChange - The function to be called when a page is clicked.
  * @returns {JSX.Element} - The Pagination component.
  */
-const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalItems, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalItems, onPageChange }: PaginationProps): JSX.Element => {
   const totalPages: number = Math.ceil(totalItems / pageSize);
   const pages: number[] = [];
 
