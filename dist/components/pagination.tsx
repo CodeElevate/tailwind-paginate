@@ -1,15 +1,30 @@
 import React from "react";
 
-function Pagination({ currentPage, pageSize, totalItems, onPageChange }) {
-  const totalPages = Math.ceil(totalItems / pageSize);
-  const pages = [];
+interface PaginationProps {
+  currentPage: number;
+  pageSize: number,
+  totalItems: number,
+  onPageChange: (page: number) => void;
+}
+/**
+ * Pagination component for displaying page numbers and handling page changes.
+ * @param {Object} props - The props object for the Pagination component.
+ * @param {number} props.currentPage - The current page number.
+ * @param {number} props.pageSize - The number of items to display per page.
+ * @param {number} props.totalItems - The total number of items to be paginated.
+ * @param {function} props.onPageChange - The function to be called when a page is clicked.
+ * @returns {JSX.Element} - The Pagination component.
+ */
+const Pagination: React.FC<PaginationProps> = ({ currentPage, pageSize, totalItems, onPageChange }) => {
+  const totalPages: number = Math.ceil(totalItems / pageSize);
+  const pages: number[] = [];
 
   // Build an array of page numbers to display
   for (let i = 1; i <= totalPages; i++) {
     pages.push(i);
   }
 
-  function handlePageClick(pageNumber) {
+  function handlePageClick(pageNumber: number) {
     onPageChange(pageNumber);
   }
   const firstItem = (currentPage - 1) * pageSize + 1;
@@ -271,6 +286,8 @@ function Pagination({ currentPage, pageSize, totalItems, onPageChange }) {
       ) : null}
     </>
   );
-}
+};
 
 export default Pagination;
+
+
