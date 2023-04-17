@@ -1,3 +1,3 @@
 
-export { default as Pagination } from './components/pagination';
+export { default as Pagination } from './components/Pagination';
 
