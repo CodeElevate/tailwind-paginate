@@ -1,6 +1,8 @@
 # Tailwind Paginate
 Tailwind Paginate is a React component that makes it easy to add pagination to your TailwindCSS-powered web applications. It provides a customizable, responsive pagination component that is easy to integrate with your existing React codebase.
 
+![Screenshot from 2023-04-17 21-24-30](https://user-images.githubusercontent.com/84431594/232542617-6d1486a9-15a4-4be5-b64b-ae1ccc988ca9.png)
+
 ## Installation
 To install Tailwind Paginate, simply run:
 ```bash
