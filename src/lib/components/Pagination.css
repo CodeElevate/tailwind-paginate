@@ -1,0 +1,14 @@
+
+
+
+.tailwind-paginate.pagination{
+    @apply flex items-center justify-between my-4;
+}
+
+.tailwind-paginate.pagination .container-mobile{
+    @apply flex justify-between flex-1 md:hidden;
+}
+
+.tailwind-paginate.pagination .container-desktop{
+    @apply hidden md:flex-1 md:flex md:items-center md:justify-between;
+}
