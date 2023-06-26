@@ -8,6 +8,7 @@ import PaginationButton from "./Button";
  * @param {Object} props - The props object for the Pagination component.
  * @returns {JSX.Element} - The Pagination component.
  */
+
 interface PaginationState {
   totalPages: number;
   pages: number[];
