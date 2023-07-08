@@ -36,7 +36,7 @@ interface PaginationProps {
     */
     breakLabel?: React.ReactNode;
 
-    // brealAriaLabel?: string;
+    // breakAriaLabel?: string;
 
     /** 
     * The class name for the "break" 
