@@ -8,7 +8,6 @@ import PaginationButton from "./Button";
  * @param {Object} props - The props object for the Pagination component.
  * @returns {JSX.Element} - The Pagination component.
  */
-
 interface PaginationState {
   totalPages: number;
   pages: number[];
@@ -83,7 +82,7 @@ class Pagination extends React.Component<PaginationProps, PaginationState> {
       totalItems,
     } = this.props;
 
-    const { totalPages, pages } = this.state;
+    const { totalPages} = this.state;
 
     const firstItem = (currentPage - 1) * pageSize + 1;
     const lastItem = Math.min(currentPage * pageSize, totalItems);
@@ -97,8 +96,6 @@ class Pagination extends React.Component<PaginationProps, PaginationState> {
       <>
         {totalPages > 0 ? (
           <div
-            role={'navigation'}
-            aria-label={'Pagination Navigation'}
             className={containerClassName ?? 'tailwind-paginate pagination'}
           >
             <div className={'container-mobile'}>

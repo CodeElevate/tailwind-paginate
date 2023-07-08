@@ -7,8 +7,7 @@ interface ButtonProps {
     className?: string;
     disabled?: boolean;
     onClick?: () => void;
-    show?: boolean;
-    
+    show?: boolean,
 }
 
 class PaginationButton extends Component<ButtonProps> {
